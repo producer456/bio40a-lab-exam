@@ -4,12 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BIO 40A — Lab Exam Simulator</title>
-    <link rel="stylesheet" href="styles.css?v=1">
+    <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
     <header>
         <h1>BIO 40A — Lab Exam Simulator</h1>
-        <div class="header-controls">
+        <div class="top-tabs">
+            <button class="top-tab active" id="top-practice">Practice Exam (12 stations)</button>
+            <button class="top-tab" id="top-bank">Question Bank (385 questions)</button>
+        </div>
+    </header>
+
+    <!-- ============================================== -->
+    <!-- VIEW 1: Practice Exam (original 12 stations)   -->
+    <!-- ============================================== -->
+    <section class="view" id="view-practice">
+        <div class="sub-controls">
             <div class="mode-toggle" id="role-toggle">
                 <button id="btn-teacher" class="mode-btn active" data-role="teacher">Teacher Mode</button>
                 <button id="btn-student" class="mode-btn" data-role="student">Student Mode</button>
@@ -19,47 +29,139 @@
                 <button id="btn-exam" class="exam-btn" data-exam="exam">Exam (timed, score at end)</button>
             </div>
         </div>
-    </header>
 
-    <nav class="station-tabs" id="station-tabs"></nav>
+        <nav class="station-tabs" id="station-tabs"></nav>
 
-    <main>
-        <div class="workspace">
-            <section class="station" id="station">
-                <div class="station-image-wrap">
-                    <img id="station-image" src="" alt="Station photo">
-                    <div class="image-caption" id="image-caption"></div>
-                </div>
-                <div class="questions" id="questions"></div>
-            </section>
+        <main>
+            <div class="workspace">
+                <section class="station" id="station">
+                    <div class="station-image-wrap">
+                        <img id="station-image" src="" alt="Station photo">
+                        <div class="image-caption" id="image-caption"></div>
+                    </div>
+                    <div class="questions" id="questions"></div>
+                </section>
 
-            <aside class="sidebar">
-                <div class="progress" id="progress"></div>
-                <div class="timer" id="timer" style="display:none;">
-                    <div class="timer-label">Time on this station</div>
-                    <div class="timer-value" id="timer-value">0:00</div>
-                </div>
-                <div class="nav-buttons">
-                    <button class="nav-btn" id="btn-prev">◀ Previous</button>
-                    <button class="nav-btn primary" id="btn-next">Next ▶</button>
-                </div>
-                <div class="actions">
-                    <button class="action-btn" id="btn-submit-exam" style="display:none;">Submit Exam</button>
-                    <button class="action-btn" id="btn-reset-student">Reset Answers</button>
-                    <button class="action-btn data-btn" id="btn-export">Export Answer Key</button>
-                    <button class="action-btn data-btn" id="btn-import">Import Answer Key</button>
-                    <input type="file" id="import-file" accept="application/json,.json" style="display:none;">
-                </div>
-                <div class="key-status" id="key-status"></div>
-            </aside>
+                <aside class="sidebar">
+                    <div class="progress" id="progress"></div>
+                    <div class="timer" id="timer" style="display:none;">
+                        <div class="timer-label">Time on this station</div>
+                        <div class="timer-value" id="timer-value">0:00</div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="nav-btn" id="btn-prev">◀ Previous</button>
+                        <button class="nav-btn primary" id="btn-next">Next ▶</button>
+                    </div>
+                    <div class="actions">
+                        <button class="action-btn" id="btn-submit-exam" style="display:none;">Submit Exam</button>
+                        <button class="action-btn" id="btn-reset-student">Reset Answers</button>
+                        <button class="action-btn data-btn" id="btn-export">Export Answer Key</button>
+                        <button class="action-btn data-btn" id="btn-import">Import Answer Key</button>
+                        <input type="file" id="import-file" accept="application/json,.json" style="display:none;">
+                    </div>
+                    <div class="key-status" id="key-status"></div>
+                </aside>
+            </div>
+
+            <section class="results" id="results" style="display:none;"></section>
+        </main>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- VIEW 2: Question Bank (385 generated questions) -->
+    <!-- ============================================== -->
+    <section class="view" id="view-bank" style="display:none;">
+        <div class="sub-controls">
+            <div class="mode-toggle">
+                <button class="bank-role-btn active" data-bank-role="student">Student Mode</button>
+                <button class="bank-role-btn" data-bank-role="teacher">Teacher Mode (place markers)</button>
+            </div>
+            <div class="exam-toggle" id="bank-quiz-mode-wrap">
+                <button class="bank-exam-btn active" data-bank-exam="practice">Practice</button>
+                <button class="bank-exam-btn" data-bank-exam="exam">Exam</button>
+            </div>
+            <div class="bank-filters" id="bank-filters">
+                <label>Filter:
+                    <select id="bank-filter-select">
+                        <option value="all">All (385)</option>
+                        <option value="bones">Bones only</option>
+                        <option value="skull">Skull only</option>
+                        <option value="vertebrae">Vertebrae / spine</option>
+                        <option value="upper">Upper limb</option>
+                        <option value="lower">Lower limb</option>
+                        <option value="tissues">Tissue slides</option>
+                        <option value="models">Cell / skin / mitosis</option>
+                        <option value="station_photos">My lab photos</option>
+                    </select>
+                </label>
+                <label>Session length:
+                    <select id="bank-session-length">
+                        <option value="10">10 questions</option>
+                        <option value="25" selected>25 questions</option>
+                        <option value="50">50 questions</option>
+                        <option value="100">100 questions</option>
+                        <option value="all">All in filter</option>
+                    </select>
+                </label>
+                <button class="action-btn" id="btn-start-bank">Start New Session</button>
+            </div>
         </div>
 
-        <section class="results" id="results" style="display:none;"></section>
-    </main>
+        <main>
+            <div class="workspace">
+                <section class="station" id="bank-station">
+                    <div class="station-image-wrap bank-image-wrap" id="bank-image-wrap">
+                        <img id="bank-image" src="" alt="Question image">
+                        <svg id="bank-overlay" class="bank-overlay"></svg>
+                        <div class="image-caption" id="bank-caption"></div>
+                    </div>
+                    <div class="questions" id="bank-questions"></div>
+                </section>
+
+                <aside class="sidebar">
+                    <div class="progress" id="bank-progress"></div>
+                    <div class="nav-buttons">
+                        <button class="nav-btn" id="bank-prev">◀ Previous</button>
+                        <button class="nav-btn primary" id="bank-next">Next ▶</button>
+                    </div>
+                    <div class="actions">
+                        <button class="action-btn" id="bank-submit" style="display:none;">Submit Exam</button>
+                        <button class="action-btn data-btn" id="bank-export-coords">Export Coords</button>
+                        <button class="action-btn data-btn" id="bank-import-coords">Import Coords</button>
+                        <button class="action-btn data-btn" id="bank-reset-coords">Reset Coords</button>
+                        <input type="file" id="bank-import-file" accept="application/json,.json" style="display:none;">
+                    </div>
+                    <div class="key-status" id="bank-status"></div>
+                </aside>
+            </div>
+
+            <section class="results" id="bank-results" style="display:none;"></section>
+        </main>
+    </section>
 
     <div id="toast" class="toast"></div>
 
-    <script src="data.js?v=1"></script>
-    <script src="app.js?v=1"></script>
+    <script src="data.js?v=2"></script>
+    <script src="bank-data.js?v=2"></script>
+    <script src="app.js?v=2"></script>
+    <script src="bank-app.js?v=2"></script>
+    <script>
+        document.getElementById('top-practice').addEventListener('click', () => {
+            document.getElementById('top-practice').classList.add('active');
+            document.getElementById('top-bank').classList.remove('active');
+            document.getElementById('view-practice').style.display = 'block';
+            document.getElementById('view-bank').style.display = 'none';
+        });
+        document.getElementById('top-bank').addEventListener('click', () => {
+            document.getElementById('top-bank').classList.add('active');
+            document.getElementById('top-practice').classList.remove('active');
+            document.getElementById('view-bank').style.display = 'block';
+            document.getElementById('view-practice').style.display = 'none';
+            if (typeof window.bankInit === 'function' && !window.bankReady) {
+                window.bankInit();
+                window.bankReady = true;
+            }
+        });
+    </script>
 </body>
 </html>
