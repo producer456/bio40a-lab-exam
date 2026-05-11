@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BIO 40A — Lab Exam Simulator</title>
+    <link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+    <header>
+        <h1>BIO 40A — Lab Exam Simulator</h1>
+        <div class="header-controls">
+            <div class="mode-toggle" id="role-toggle">
+                <button id="btn-teacher" class="mode-btn active" data-role="teacher">Teacher Mode</button>
+                <button id="btn-student" class="mode-btn" data-role="student">Student Mode</button>
+            </div>
+            <div class="exam-toggle" id="exam-toggle" style="display:none;">
+                <button id="btn-practice" class="exam-btn active" data-exam="practice">Practice (instant feedback)</button>
+                <button id="btn-exam" class="exam-btn" data-exam="exam">Exam (timed, score at end)</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="station-tabs" id="station-tabs"></nav>
+
+    <main>
+        <div class="workspace">
+            <section class="station" id="station">
+                <div class="station-image-wrap">
+                    <img id="station-image" src="" alt="Station photo">
+                    <div class="image-caption" id="image-caption"></div>
+                </div>
+                <div class="questions" id="questions"></div>
+            </section>
+
+            <aside class="sidebar">
+                <div class="progress" id="progress"></div>
+                <div class="timer" id="timer" style="display:none;">
+                    <div class="timer-label">Time on this station</div>
+                    <div class="timer-value" id="timer-value">0:00</div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="btn-prev">◀ Previous</button>
+                    <button class="nav-btn primary" id="btn-next">Next ▶</button>
+                </div>
+                <div class="actions">
+                    <button class="action-btn" id="btn-submit-exam" style="display:none;">Submit Exam</button>
+                    <button class="action-btn" id="btn-reset-student">Reset Answers</button>
+                    <button class="action-btn data-btn" id="btn-export">Export Answer Key</button>
+                    <button class="action-btn data-btn" id="btn-import">Import Answer Key</button>
+                    <input type="file" id="import-file" accept="application/json,.json" style="display:none;">
+                </div>
+                <div class="key-status" id="key-status"></div>
+            </aside>
+        </div>
+
+        <section class="results" id="results" style="display:none;"></section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="data.js?v=1"></script>
+    <script src="app.js?v=1"></script>
+</body>
+</html>
